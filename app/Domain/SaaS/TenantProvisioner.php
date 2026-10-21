@@ -30,7 +30,7 @@ class TenantProvisioner
      */
     public function provision(array $data): Tenant
     {
-        return DB::transaction(function () use ($data) {
+        return $this->context->runWithoutTenant(fn () => DB::transaction(function () use ($data) {
             self::syncPermissions();
 
             $tenant = Tenant::create([
@@ -77,7 +77,7 @@ class TenantProvisioner
 
                 return $tenant->fresh();
             });
-        });
+        }));
     }
 
     /** @return array<string, Role> */
@@ -106,6 +106,25 @@ class TenantProvisioner
         foreach (PermissionCatalog::all() as $key => $meta) {
             Permission::updateOrCreate(['key' => $key], $meta);
         }
+    }
+
+    /**
+     * Tambahkan izin baru dari katalog ke peran bawaan tenant yang sudah ada.
+     * Hanya menambah, tidak pernah mencabut izin yang sudah diatur pemilik.
+     */
+    public static function syncDefaultRolePermissions(): int
+    {
+        $ids = Permission::pluck('id', 'key');
+        $added = 0;
+        foreach (PermissionCatalog::DEFAULT_ROLES as $slug => $def) {
+            $keys = $def['permissions'] === '*' ? $ids->keys()->all() : $def['permissions'];
+            foreach (Role::withoutGlobalScopes()->where('slug', $slug)->where('is_system', true)->get() as $role) {
+                $res = $role->permissions()->syncWithoutDetaching($ids->only($keys)->values());
+                $added += count($res['attached']);
+            }
+        }
+
+        return $added;
     }
 
     protected function uniqueSlug(string $name): string

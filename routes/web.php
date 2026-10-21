@@ -31,6 +31,23 @@ Route::middleware(['auth', 'active'])->group(function () {
         })->name('theme-mode');
         Route::livewire('/akun', Livewire\AccountPage::class)->name('account');
 
+        Route::prefix('operasional')->name('ops.')->group(function () {
+            Route::livewire('/menu', Livewire\Ops\MenuPage::class)
+                ->middleware(['module:menu', 'can:menu.manage'])->name('menu');
+
+            Route::middleware('module:inventory')->group(function () {
+                Route::livewire('/resep', Livewire\Ops\RecipesPage::class)->middleware('can:recipes.manage')->name('recipes');
+                Route::livewire('/resep/{recipe}', Livewire\Ops\RecipeEditor::class)->middleware('can:recipes.manage')
+                    ->whereNumber('recipe')->name('recipes.edit');
+                Route::livewire('/produksi', Livewire\Ops\ProductionPage::class)->middleware('can:production.manage')->name('production');
+                Route::livewire('/stok', Livewire\Ops\InventoryPage::class)->middleware('can:inventory.view')->name('inventory');
+                Route::livewire('/kartu-stok', Livewire\Ops\StockLedgerPage::class)->middleware('can:inventory.view')->name('ledger');
+                Route::livewire('/susut', Livewire\Ops\WastePage::class)->middleware('can:inventory.view')->name('waste');
+                Route::livewire('/opname', Livewire\Ops\StockCountPage::class)->middleware('can:inventory.manage')->name('counts');
+                Route::livewire('/pembelian', Livewire\Ops\PurchasingPage::class)->middleware('can:purchasing.manage')->name('purchasing');
+            });
+        });
+
         Route::prefix('pengaturan')->name('settings.')->group(function () {
             Route::livewire('/profil-perusahaan', Livewire\Settings\CompanyProfilePage::class)
                 ->middleware('can:company.manage')->name('company');

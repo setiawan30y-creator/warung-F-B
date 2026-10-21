@@ -11,5 +11,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         TenantProvisioner::syncPermissions();
+        TenantProvisioner::syncDefaultRolePermissions();
     }
 }

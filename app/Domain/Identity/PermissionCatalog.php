@@ -21,11 +21,14 @@ class PermissionCatalog
             'roles.manage' => 'Kelola peran & izin',
             'audit.view' => 'Lihat log audit',
         ],
-        'Menu & Stok (Fase 2)' => [
+        'Menu & Stok' => [
             'menu.manage' => 'Kelola menu & harga',
             'recipes.manage' => 'Kelola resep & HPP',
-            'inventory.manage' => 'Kelola stok',
-            'purchasing.manage' => 'Kelola pembelian',
+            'production.manage' => 'Catat produksi racikan',
+            'inventory.view' => 'Lihat stok & kartu stok',
+            'inventory.manage' => 'Kelola bahan, susut & opname',
+            'inventory.approve' => 'Setujui susut bernilai besar',
+            'purchasing.manage' => 'Kelola supplier & pembelian',
         ],
         'Penjualan (Fase 3–4)' => [
             'pos.use' => 'Gunakan kasir/POS',
@@ -49,18 +52,18 @@ class PermissionCatalog
     public const DEFAULT_ROLES = [
         'pemilik' => ['name' => 'Pemilik', 'description' => 'Akses penuh ke semua cabang dan pengaturan.', 'permissions' => '*'],
         'manajer' => ['name' => 'Manajer', 'description' => 'Mengelola operasional cabang.', 'permissions' => [
-            'branches.view', 'users.view', 'audit.view', 'menu.manage', 'recipes.manage', 'inventory.manage',
-            'purchasing.manage', 'pos.use', 'pos.discount', 'pos.void', 'kitchen.use', 'closing.perform',
+            'branches.view', 'users.view', 'audit.view', 'menu.manage', 'recipes.manage', 'production.manage',
+            'inventory.view', 'inventory.manage', 'inventory.approve', 'purchasing.manage', 'pos.use', 'pos.discount', 'pos.void', 'kitchen.use', 'closing.perform',
             'closing.approve', 'finance.view', 'employees.manage', 'attendance.approve',
         ]],
         'kasir' => ['name' => 'Kasir', 'description' => 'Transaksi penjualan dan closing kasir.', 'permissions' => [
             'branches.view', 'pos.use', 'closing.perform',
         ]],
-        'dapur' => ['name' => 'Dapur', 'description' => 'Layar dapur dan produksi.', 'permissions' => [
-            'branches.view', 'kitchen.use',
+        'dapur' => ['name' => 'Dapur', 'description' => 'Layar dapur dan produksi racikan.', 'permissions' => [
+            'branches.view', 'kitchen.use', 'production.manage', 'inventory.view',
         ]],
-        'gudang' => ['name' => 'Gudang', 'description' => 'Stok dan pembelian.', 'permissions' => [
-            'branches.view', 'inventory.manage', 'purchasing.manage',
+        'gudang' => ['name' => 'Gudang', 'description' => 'Stok, susut, opname, dan pembelian.', 'permissions' => [
+            'branches.view', 'inventory.view', 'inventory.manage', 'purchasing.manage',
         ]],
     ];
 

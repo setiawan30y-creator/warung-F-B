@@ -3,6 +3,7 @@
 namespace App\Livewire\Concerns;
 
 use App\Domain\Tenancy\TenantContext;
+use App\Models\Branch;
 use App\Models\Tenant;
 use App\Models\User;
 
@@ -24,11 +25,35 @@ trait TenantPage
             $context->set($user->tenant);
         }
         abort_unless($context->id() === $user->tenant_id, 403);
+
+        // Pulihkan cabang aktif bila belum ditetapkan (mis. request tanpa middleware tenant).
+        if (! $context->branch()) {
+            $id = session('active_branch_id');
+            $branch = $id ? \App\Models\Branch::whereKey($id)->where('is_active', true)->first() : null;
+            if (! $branch || ! $user->canAccessBranch($branch)) {
+                $branch = $user->accessibleBranches()->first();
+            }
+            $context->setBranch($branch);
+        }
     }
 
     protected function tenant(): Tenant
     {
         return app(TenantContext::class)->tenant();
+    }
+
+    /** Cabang aktif; operasi stok selalu terjadi di cabang ini. */
+    protected function branch(): Branch
+    {
+        $branch = app(TenantContext::class)->branch();
+        abort_unless($branch && $this->user()->canAccessBranch($branch), 403, 'Pilih cabang aktif terlebih dahulu.');
+
+        return $branch;
+    }
+
+    protected function hasModule(string $module): bool
+    {
+        return (bool) $this->tenant()->subscription?->hasModule($module);
     }
 
     protected function user(): User

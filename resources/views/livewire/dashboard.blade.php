@@ -63,15 +63,42 @@
                 </section>
             @endif
 
+            @if ($stockAlerts->isNotEmpty() || $pendingWaste)
+                <section class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h2>Perlu perhatian</h2>
+                            <p>Stok di {{ $branch->name }} yang sudah di bawah batas minimum.</p>
+                        </div>
+                        <a class="small" href="{{ route('ops.inventory', ['lowOnly' => 1]) }}" wire:navigate>Lihat semua</a>
+                    </div>
+                    <ul class="panel-body roadmap" style="padding-top:6px;padding-bottom:6px">
+                        @if ($pendingWaste)
+                            <li>
+                                <span class="badge warn">Susut</span>
+                                <span style="flex:1">{{ $pendingWaste }} catatan susut menunggu persetujuan</span>
+                                @if ($canApproveWaste)<a class="btn btn-ghost btn-sm" href="{{ route('ops.waste') }}" wire:navigate>Tinjau</a>@endif
+                            </li>
+                        @endif
+                        @foreach ($stockAlerts->take(6) as $a)
+                            <li>
+                                <span @class(['badge', 'bad' => $a['qty'] <= 0, 'warn' => $a['qty'] > 0])>{{ $a['qty'] <= 0 ? 'Habis' : 'Menipis' }}</span>
+                                <span style="flex:1">{{ $a['item']->name }}</span>
+                                <span class="small muted num">{{ qty($a['qty']) }} dari minimum {{ qty($a['item']->min_stock) }} {{ $a['item']->unitCode() }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </section>
+            @endif
+
             <section class="panel">
                 <div class="panel-head">
                     <div>
                         <h2>Modul yang sedang dibangun</h2>
-                        <p>Fondasi sudah aktif. Modul berikut menyusul sesuai urutan roadmap.</p>
+                        <p>Fondasi, menu, resep, dan stok sudah aktif. Modul berikut menyusul sesuai urutan roadmap.</p>
                     </div>
                 </div>
                 <ul class="panel-body roadmap" style="padding-top:6px;padding-bottom:6px">
-                    <li><span class="phase">Fase 2</span><span>Menu, resep dan sub-resep, HPP, stok, pembelian, kontrol susut</span></li>
                     <li><span class="phase">Fase 3</span><span>Kasir/POS, QR meja, Order Ahead, pembayaran, nota</span></li>
                     <li><span class="phase">Fase 4</span><span>Layar dapur, kapasitas, produksi batch</span></li>
                     <li><span class="phase">Fase 5</span><span>Closing kasir dan riwayatnya, saldo awal, keuangan</span></li>

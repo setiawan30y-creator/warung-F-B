@@ -63,6 +63,8 @@ class AuditLogPage extends Component
             'events' => [
                 'auth' => 'Masuk/keluar', 'user' => 'Pengguna', 'role' => 'Peran', 'branch' => 'Cabang',
                 'company_profile' => 'Profil perusahaan', 'theme_setting' => 'Tema', 'tenant_subscription' => 'Langganan',
+                'menu' => 'Menu', 'recipe' => 'Resep', 'inventory_item' => 'Bahan', 'production_batch' => 'Produksi',
+                'purchase_order' => 'Pembelian', 'waste_record' => 'Susut', 'stock_count' => 'Opname',
             ],
         ]);
     }

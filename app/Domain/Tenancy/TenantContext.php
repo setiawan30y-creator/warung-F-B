@@ -73,6 +73,20 @@ class TenantContext
         }
     }
 
+    /** Jalankan tanpa konteks tenant (mis. admin platform membuat tenant baru), lalu pulihkan. */
+    public function runWithoutTenant(Closure $callback): mixed
+    {
+        [$prevTenant, $prevBranch] = [$this->tenant, $this->branch];
+        $this->tenant = null;
+        $this->branch = null;
+        try {
+            return $callback();
+        } finally {
+            $this->tenant = $prevTenant;
+            $this->branch = $prevBranch;
+        }
+    }
+
     public function forget(): void
     {
         $this->tenant = null;

@@ -47,11 +47,26 @@
                 <x-icon name="home"/> Beranda
             </a>
 
+            @php
+                $sub = $currentTenant->subscription;
+                $ops = [
+                    ['ops.menu', 'menu.manage', 'menu', 'bowl', 'Menu & harga'],
+                    ['ops.recipes', 'recipes.manage', 'inventory', 'chef', 'Resep & HPP'],
+                    ['ops.production', 'production.manage', 'inventory', 'flask', 'Produksi racikan'],
+                    ['ops.inventory', 'inventory.view', 'inventory', 'box', 'Bahan & stok'],
+                    ['ops.waste', 'inventory.view', 'inventory', 'trash', 'Susut & rusak'],
+                    ['ops.counts', 'inventory.manage', 'inventory', 'clipboard', 'Stok opname'],
+                    ['ops.purchasing', 'purchasing.manage', 'inventory', 'truck', 'Pembelian'],
+                ];
+                $opsVisible = collect($ops)->filter(fn ($o) => $user->can($o[1]) && $sub?->hasModule($o[2]));
+            @endphp
             <div class="nav-group">Operasional</div>
-            <span class="disabled"><x-icon name="bowl"/> Menu & resep <span class="soon">Fase 2</span></span>
-            <span class="disabled"><x-icon name="box"/> Stok & pembelian <span class="soon">Fase 2</span></span>
+            @foreach ($opsVisible as [$route, $perm, $mod, $icon, $label])
+                <a href="{{ route($route) }}" wire:navigate @if(request()->routeIs($route.'*')) aria-current="page" @endif>
+                    <x-icon :name="$icon"/> {{ $label }}
+                </a>
+            @endforeach
             <span class="disabled"><x-icon name="cash"/> Kasir & pesanan <span class="soon">Fase 3</span></span>
-            <span class="disabled"><x-icon name="chef"/> Layar dapur <span class="soon">Fase 4</span></span>
             <span class="disabled"><x-icon name="clock"/> Karyawan & shift <span class="soon">Fase 6</span></span>
 
             @php

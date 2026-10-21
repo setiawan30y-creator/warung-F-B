@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Domain\Identity\PermissionCatalog;
+use App\Domain\Inventory\RecipeCostService;
 use App\Domain\Tenancy\TenantContext;
 use App\Http\Middleware\EnsurePlatformAdmin;
 use App\Http\Middleware\EnsureUserIsActive;
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // scoped: konteks tenant direset untuk setiap request / job antrean.
         $this->app->scoped(TenantContext::class);
+        $this->app->scoped(RecipeCostService::class);
     }
 
     public function boot(): void

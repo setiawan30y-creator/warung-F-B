@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureModuleEnabled;
 use App\Http\Middleware\EnsurePlatformAdmin;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\SetTenantContext;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant' => SetTenantContext::class,
             'platform' => EnsurePlatformAdmin::class,
             'active' => EnsureUserIsActive::class,
+            'module' => EnsureModuleEnabled::class,
         ]);
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('dashboard'));
