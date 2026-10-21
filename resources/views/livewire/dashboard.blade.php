@@ -97,7 +97,7 @@
                         <p class="muted small">{{ collect([$branch->address, $branch->city])->filter()->implode(', ') ?: 'Alamat belum diisi.' }}</p>
                         @if ($branch->mapUrl())
                             <a class="btn btn-ghost btn-sm" style="align-self:flex-start" href="{{ $branch->mapUrl() }}" target="_blank" rel="noopener">
-                                <x-icon name="pin" style="width:16px;height:16px"/> Buka di peta
+                                <x-icon name="pin" :size="16"/> Buka di peta
                             </a>
                         @endif
                     </div>

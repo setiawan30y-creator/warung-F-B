@@ -17,10 +17,12 @@
 @if ($font && $font['google'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ $font['google'] }}&display=swap">
+    {{-- Dimuat tanpa menahan tampilan; bila gagal, fon sistem dipakai. --}}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ $font['google'] }}&display=swap" media="print" onload="this.media='all'">
 @endif
 <style id="tenant-theme">{!! \App\Domain\Theme\ThemePalette::css($theme) !!}</style>
-<link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
+{{-- CSS disisipkan langsung agar tampilan tidak berantakan saat memuat atau bila alamat aset di server berbeda. --}}
+<style id="app-css">{!! file_get_contents(public_path('css/app.css')) !!}</style>
 <script>
     (function () {
         var mode = @json($mode);

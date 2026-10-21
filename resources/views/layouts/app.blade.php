@@ -94,7 +94,7 @@
                 <x-icon name="moon"/>
             </button>
             <a class="btn btn-ghost btn-sm" href="{{ route('account') }}" wire:navigate>
-                <x-icon name="user" style="width:16px;height:16px"/> {{ $user->name }}
+                <x-icon name="user" :size="16"/> {{ $user->name }}
             </a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

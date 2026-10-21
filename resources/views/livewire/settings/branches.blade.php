@@ -6,7 +6,7 @@
         </div>
         @if ($canManage)
             <button class="btn btn-primary" type="button" wire:click="create">
-                <x-icon name="plus" style="width:16px;height:16px"/> Tambah cabang
+                <x-icon name="plus" :size="16"/> Tambah cabang
             </button>
         @endif
     </div>
@@ -121,7 +121,7 @@
                     <div x-data>
                         <button type="button" class="btn btn-ghost btn-sm"
                                 x-on:click="navigator.geolocation?.getCurrentPosition(p => { $wire.set('form.latitude', p.coords.latitude.toFixed(7)); $wire.set('form.longitude', p.coords.longitude.toFixed(7)); }, () => alert('Lokasi perangkat tidak bisa dibaca. Isi koordinat secara manual.'))">
-                            <x-icon name="pin" style="width:16px;height:16px"/> Pakai lokasi perangkat ini
+                            <x-icon name="pin" :size="16"/> Pakai lokasi perangkat ini
                         </button>
                         <p class="hint small muted" style="margin-top:6px">Lokasi hanya dibaca sekali saat tombol ditekan, untuk mengisi koordinat cabang.</p>
                     </div>

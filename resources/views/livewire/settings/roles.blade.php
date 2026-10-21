@@ -5,7 +5,7 @@
             <p>Izin diperiksa di server untuk setiap tindakan. Izin modul yang belum dibangun bisa disiapkan dari sekarang.</p>
         </div>
         <button class="btn btn-primary" type="button" wire:click="startCreate">
-            <x-icon name="plus" style="width:16px;height:16px"/> Peran baru
+            <x-icon name="plus" :size="16"/> Peran baru
         </button>
     </div>
 

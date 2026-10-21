@@ -4,7 +4,7 @@
             <h1>Tenant</h1>
             <p>Setiap tenant adalah satu usaha dengan data, pengguna, dan cabang yang terpisah. Menonaktifkan tenant tidak menghapus datanya.</p>
         </div>
-        <button class="btn btn-primary" type="button" wire:click="create"><x-icon name="plus" style="width:16px;height:16px"/> Tenant baru</button>
+        <button class="btn btn-primary" type="button" wire:click="create"><x-icon name="plus" :size="16"/> Tenant baru</button>
     </div>
 
     <section class="panel">

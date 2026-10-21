@@ -6,7 +6,7 @@
         </div>
         @if ($canManage)
             <button class="btn btn-primary" type="button" wire:click="create">
-                <x-icon name="plus" style="width:16px;height:16px"/> Tambah pengguna
+                <x-icon name="plus" :size="16"/> Tambah pengguna
             </button>
         @endif
     </div>

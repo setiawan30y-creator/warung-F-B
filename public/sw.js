@@ -1,8 +1,8 @@
 /* ALMARA PWA service worker.
  * Hanya aset statis yang di-cache. Halaman dan data selalu diambil dari server,
  * karena transaksi baru dianggap sah setelah server mengonfirmasi (Blueprint §3.3). */
-const CACHE = 'almara-static-v1';
-const ASSETS = ['/css/app.css', '/icons/icon-192.png', '/icons/icon-512.png'];
+const CACHE = 'almara-static-v2';
+const ASSETS = ['/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
