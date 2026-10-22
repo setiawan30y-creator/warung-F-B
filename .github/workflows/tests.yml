@@ -13,10 +13,10 @@ jobs:
       matrix:
         php: ['8.3', '8.4']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
-          php: ${{ matrix.php }}
+          php-version: ${{ matrix.php }}
           extensions: mbstring, pdo_sqlite, gd, intl, bcmath
           coverage: none
       - run: composer install --no-interaction --prefer-dist --no-progress
@@ -42,16 +42,13 @@ jobs:
       DB_USERNAME: root
       DB_PASSWORD: root
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: shivammathur/setup-php@v2
         with:
-          php: '8.4'
+          php-version: '8.4'
           extensions: mbstring, pdo_mysql, gd, intl, bcmath
           coverage: none
       - run: composer install --no-interaction --prefer-dist --no-progress
       - run: cp .env.example .env && php artisan key:generate
       - run: php artisan migrate --force && php artisan db:seed --force
-      - run: php artisan test --env=testing
-        env:
-          DB_CONNECTION: mysql
-          DB_DATABASE: almara_test
+      - run: php artisan test
